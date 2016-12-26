@@ -133,9 +133,22 @@ setkey(dtMelt, subject, activity, domain, acceleration, instrument,jerk, magnitu
 dtTidy <- dtMelt %>%
 group_by(subject, activity, domain, acceleration, instrument,jerk, magnitude, variable, axis) %>% 
 summarise(count=n(), average = mean(value))
+            
+#save te data table to a tab-delimited text file called "HumanActivityRecognitionUsingSmartphonesDataset"
 
+dtTidyPath <- file.path(datadir, "DatasetHumanActivityRecognitionUsingSmartphones.txt")
+write.table(dtTidy, dtTidyPath, quote = FALSE, sep = "\t", row.names = FALSE) 
 
 ##Make codebook called CodeBook.md
+require(knitr)
+require(markdown)
+
+knit("CodeBook.Rmd", output = "CodeBook.md", encoding = "ISO8859-1", quiet = TRUE)
+markdownToHTML("CodeBook.md", "CodeBook.html")
+
+markdownToHTML("run_analysis.md", "run_analysis.html")
+
+
 knit("makeCodebook.Rmd", output = "codebook.md", encoding = "ISO8859-1", quiet = TRUE)
 
 
